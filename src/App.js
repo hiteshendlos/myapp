@@ -101,7 +101,23 @@ function App() {
     link.setAttribute("download", filename);
     link.click();
   }
-  // const newArr = [];
+
+  const download = () => {
+    downloadCSV({
+      filename: "output.csv",
+      data: FilteredData,
+    });
+
+    FilteredData
+      ? downloadCSV({
+          filename: "output.csv",
+          data: FilteredData,
+        })
+      : downloadCSV({
+          filename: "output.csv",
+          data: parsedData,
+        });
+  };
 
   const OnEveryChange = () => {
     console.log({ maxDuration });
@@ -161,6 +177,7 @@ function App() {
     // Filtered Values
     setValues(valuesArray);
 
+    setFilteredData(global);
     // console.log("value array", values);
   };
 
@@ -258,6 +275,15 @@ function App() {
           <div>
             <button
               onClick={() => {
+                FilteredData.length > 0 || parsedData.length > 0
+                  ? download()
+                  : alert("please select file");
+              }}
+            >
+              Download csv
+            </button>
+            <button
+              onClick={() => {
                 console.log("min", Number(minDuration));
                 console.log(
                   "max",
@@ -265,7 +291,7 @@ function App() {
                 );
               }}
             >
-              Download csv
+              dummy
             </button>
           </div>
         </div>
